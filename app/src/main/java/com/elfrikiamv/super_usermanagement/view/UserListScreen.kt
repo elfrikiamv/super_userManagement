@@ -35,7 +35,11 @@ fun UserListScreen(navController: NavController, viewModel: UserViewModel = view
             TopAppBar(title = { Text("User Management") }) // Top app bar with title
         },
         content = { paddingValues -> // Use paddingValues to avoid content being obscured by app bars
-            UserList(users, navController, modifier = Modifier.padding(paddingValues)) // Pass the list of users to the UserList composable with padding
+            UserList(
+                users,
+                navController,
+                modifier = Modifier.padding(paddingValues)
+            ) // Pass the list of users to the UserList composable with padding
         }
     )
 }

@@ -27,9 +27,15 @@ fun UserDetailScreen(userId: Int, viewModel: UserViewModel = viewModel()) {
         },
         content = { paddingValues -> // Use paddingValues to avoid content being obscured by app bars
             user?.let {
-                UserDetailContent(user = it, modifier = Modifier.padding(paddingValues)) // Apply padding to the detail content
+                UserDetailContent(
+                    user = it,
+                    modifier = Modifier.padding(paddingValues)
+                ) // Apply padding to the detail content
             } ?: run {
-                Text("User not found", Modifier.padding(paddingValues)) // Show error with applied padding
+                Text(
+                    "User not found",
+                    Modifier.padding(paddingValues)
+                ) // Show error with applied padding
             }
         }
     )
