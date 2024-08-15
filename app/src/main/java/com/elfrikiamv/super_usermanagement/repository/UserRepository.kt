@@ -2,9 +2,9 @@ package com.elfrikiamv.super_usermanagement.repository
 
 // UserRepository.kt
 
-import com.elfrikiamv.super_usermanagement.model.User
-import com.elfrikiamv.super_usermanagement.model.Post
 import com.elfrikiamv.super_usermanagement.model.Comment
+import com.elfrikiamv.super_usermanagement.model.Post
+import com.elfrikiamv.super_usermanagement.model.User
 import com.elfrikiamv.super_usermanagement.network.RetrofitInstance
 
 class UserRepository {

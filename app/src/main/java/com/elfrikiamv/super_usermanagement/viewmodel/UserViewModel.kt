@@ -4,9 +4,9 @@ package com.elfrikiamv.super_usermanagement.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elfrikiamv.super_usermanagement.model.User
-import com.elfrikiamv.super_usermanagement.model.Post
 import com.elfrikiamv.super_usermanagement.model.Comment
+import com.elfrikiamv.super_usermanagement.model.Post
+import com.elfrikiamv.super_usermanagement.model.User
 import com.elfrikiamv.super_usermanagement.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

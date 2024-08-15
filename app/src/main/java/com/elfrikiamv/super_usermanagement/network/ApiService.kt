@@ -2,9 +2,9 @@ package com.elfrikiamv.super_usermanagement.network
 
 // ApiService.kt
 
-import com.elfrikiamv.super_usermanagement.model.User
-import com.elfrikiamv.super_usermanagement.model.Post
 import com.elfrikiamv.super_usermanagement.model.Comment
+import com.elfrikiamv.super_usermanagement.model.Post
+import com.elfrikiamv.super_usermanagement.model.User
 import retrofit2.http.GET
 
 interface ApiService {

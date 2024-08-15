@@ -4,8 +4,9 @@ package com.elfrikiamv.super_usermanagement.model
 
 // Data class representing a Comment
 data class Comment(
-    val id: Int,
-    val body: String,
     val postId: Int,
-    val name: String
+    val id: Int,
+    val name: String,
+    val email: String,
+    val body: String
 )
