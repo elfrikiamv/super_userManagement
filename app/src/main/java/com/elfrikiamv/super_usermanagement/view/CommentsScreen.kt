@@ -3,6 +3,7 @@ package com.elfrikiamv.super_usermanagement.view
 // CommentsScreen.kt
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,7 +39,8 @@ fun CommentsScreen(postId: Int, viewModel: UserViewModel = viewModel()) {
 fun CommentCard(comment: Comment) {
     Card(
         modifier = Modifier
-            .padding(vertical = 8.dp),
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         elevation = 4.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

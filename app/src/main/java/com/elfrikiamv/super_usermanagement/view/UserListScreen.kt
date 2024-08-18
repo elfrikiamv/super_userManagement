@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.elfrikiamv.super_usermanagement.model.User
+import com.elfrikiamv.super_usermanagement.navigation.Screen
 import com.elfrikiamv.super_usermanagement.viewmodel.UserViewModel
 
 // Composable function to display the list of users
@@ -55,7 +56,7 @@ fun UserList(users: List<User>, navController: NavController, modifier: Modifier
         items(users) { user ->
             UserItem(user) {
                 // Navigate to the UserDetailScreen when a user item is clicked
-                navController.navigate("userDetail/${user.id}")
+                navController.navigate(Screen.UserDetail.createRoute(user.id))
             }
         }
     }

@@ -4,6 +4,7 @@ package com.elfrikiamv.super_usermanagement.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,11 +20,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.elfrikiamv.super_usermanagement.model.Post
 import com.elfrikiamv.super_usermanagement.model.User
+import com.elfrikiamv.super_usermanagement.navigation.Screen
 import com.elfrikiamv.super_usermanagement.viewmodel.UserViewModel
 
 @Composable
 fun UserDetailScreen(
-    userId: Int,
+    userId: Int?,
     navController: NavController,
     viewModel: UserViewModel = viewModel()
 ) {
@@ -71,7 +73,7 @@ fun UserDetailContent(
             items(posts) { post ->
                 PostCard(post = post) {
                     // Navegar a la pantalla de comentarios al hacer clic en la tarjeta
-                    navController.navigate("comments/${post.id}")
+                    navController.navigate(Screen.Comments.createRoute(post.id))
                 }
             }
         }
@@ -82,7 +84,8 @@ fun UserDetailContent(
 fun PostCard(post: Post, onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .padding(vertical = 8.dp)
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
             .clickable { onClick() },
         elevation = 4.dp
     ) {
