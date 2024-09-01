@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 class UserViewModel : ViewModel() {
     private val repository = UserRepository()
 
+    // LiveData o StateFlow para usuarios
     private val _users = MutableStateFlow<List<User>>(emptyList())
     val users: StateFlow<List<User>> get() = _users
 
@@ -47,4 +48,23 @@ class UserViewModel : ViewModel() {
             _comments.value = repository.getComments()
         }
     }
+
+    // Función para actualizar un usuario
+    fun updateUser(updatedUser: User) {
+        viewModelScope.launch {
+            // Simula una actualización en la fuente de datos
+            // Reemplaza esto con tu lógica real para actualizar el usuario
+            val updatedUsers = _users.value.map { user ->
+                if (user.id == updatedUser.id) updatedUser else user
+            }
+            _users.value = updatedUsers
+        }
+    }
+
+    /*// Función para actualizar un usuario
+    fun updateUser(updatedUser: User) {
+        _users.value = _users.value.map { user ->
+            if (user.id == updatedUser.id) updatedUser else user
+        }
+    }*/
 }

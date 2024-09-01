@@ -12,6 +12,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -77,6 +78,17 @@ fun UserDetailContent(
                 }
             }
         }
+    }
+
+    // Botón para editar usuario
+    Button(
+        onClick = {
+            navController.navigate(Screen.UserEdit.createRoute(user.id))
+        //navController.navigate(Screen.UserEdit.route + "/${user.id}")
+        },
+        modifier = Modifier.padding(top = 16.dp)
+    ) {
+        Text("Editar Usuario")
     }
 }
 

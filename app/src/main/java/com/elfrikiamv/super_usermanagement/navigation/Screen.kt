@@ -13,5 +13,9 @@ sealed class Screen(val route: String) {
         // Método helper para crear la ruta con el postId
         fun createRoute(postId: Int) = "comments/$postId"
     }
+
+    object UserEdit : Screen("userEdit/{userId}") {
+        fun createRoute(userId: Int) = "userEdit/$userId"
+    }
 }
 

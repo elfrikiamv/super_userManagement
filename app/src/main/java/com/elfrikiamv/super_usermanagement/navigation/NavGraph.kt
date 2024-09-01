@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.elfrikiamv.super_usermanagement.view.CommentsScreen
 import com.elfrikiamv.super_usermanagement.view.UserDetailScreen
+import com.elfrikiamv.super_usermanagement.view.UserEditScreen
 import com.elfrikiamv.super_usermanagement.view.UserListScreen
 
 @Composable
@@ -23,6 +24,11 @@ fun NavGraph(navController: NavHostController) {
         composable(Screen.Comments.route) { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId")?.toIntOrNull() ?: 0
             CommentsScreen(postId)
+        }
+
+        composable(Screen.UserEdit.route) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: 0
+            UserEditScreen(userId, navController)
         }
     }
 }
