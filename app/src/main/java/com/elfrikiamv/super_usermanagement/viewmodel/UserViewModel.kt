@@ -51,20 +51,33 @@ class UserViewModel : ViewModel() {
 
     // Función para actualizar un usuario
     fun updateUser(updatedUser: User) {
-        _users.value = _users.value?.map { user ->
+        val updatedUsers = _users.value?.map { user ->
             if (user.id == updatedUser.id) updatedUser else user
-        }?.toList() // Fuerza una nueva lista para que LiveData detecte el cambio
+        } ?: emptyList()
+        _users.postValue(updatedUsers) // Asegura la actualización
+    }
+
+
+
+    /*fun updateUser(updatedUser: User) {
+        // Crea una nueva lista para asegurarte de que LiveData detecte el cambio
+        val updatedUsers = _users.value?.map { user ->
+            if (user.id == updatedUser.id) updatedUser else user
+        } ?: emptyList()
+
+        // Asigna la nueva lista a LiveData
+        _users.value = updatedUsers
 
         // Luego puedes lanzar una corutina para sincronizar con el servidor (si decides implementar esto)
-        /*viewModelScope.launch {
+        *//*viewModelScope.launch {
             try {
                 // Simula la actualización en el servidor
                 repository.updateUserOnServer(updatedUser)
             } catch (e: Exception) {
                 // Maneja el error si falla la sincronización con el servidor
             }
-        }*/
-    }
+        }*//*
+    }*/
 
 
 }

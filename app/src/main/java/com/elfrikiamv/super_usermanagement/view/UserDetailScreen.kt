@@ -59,7 +59,6 @@ fun UserDetailContent(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(16.dp)) {
-        // Mostrar detalles del usuario
         Text(text = "Nombre: ${user.name}")
         Text(text = "Nombre de usuario: ${user.username}")
         Text(text = "Correo electrónico: ${user.email}")
@@ -68,24 +67,20 @@ fun UserDetailContent(
         Text(text = "Empresa: ${user.company.name}")
         Text(text = "Dirección: ${user.address.street}, ${user.address.city}")
 
-        // Botón para editar usuario
         Button(
             onClick = {
                 navController.navigate(Screen.UserEdit.createRoute(user.id))
-                //navController.navigate(Screen.UserEdit.route + "/${user.id}")
             },
             modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Editar Usuario")
         }
 
-        // Mostrar posts del usuario en tarjetas
         Text(text = "Publicaciones:")
 
         LazyColumn {
             items(posts) { post ->
                 PostCard(post = post) {
-                    // Navegar a la pantalla de comentarios al hacer clic en la tarjeta
                     navController.navigate(Screen.Comments.createRoute(post.id))
                 }
             }

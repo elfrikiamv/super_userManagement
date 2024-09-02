@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.elfrikiamv.super_usermanagement.model.User
+import com.elfrikiamv.super_usermanagement.navigation.Screen
 import com.elfrikiamv.super_usermanagement.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +31,8 @@ fun UserEditScreen(
     navController: NavController,
     viewModel: UserViewModel = viewModel()
 ) {
-    val user = viewModel.users.observeAsState().value?.find { it.id == userId }
+    val users by viewModel.users.observeAsState(emptyList())
+    val user = users.find { it.id == userId }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Editar Usuario") }) },
@@ -39,8 +42,11 @@ fun UserEditScreen(
                     user = it,
                     onSaveClick = { updatedUser ->
                         viewModel.updateUser(updatedUser)
-                        navController.popBackStack() // Volver a la pantalla anterior después de guardar
+                        navController.navigate(Screen.UserDetail.createRoute(updatedUser.id)) {
+                            popUpTo(Screen.UserDetail.route) { inclusive = true }
+                        }
                     },
+                    navController = navController,
                     modifier = Modifier.padding(paddingValues)
                 )
             } ?: run {
@@ -54,6 +60,7 @@ fun UserEditScreen(
 fun UserEditContent(
     user: User,
     onSaveClick: (User) -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     val nameState = remember { mutableStateOf(user.name) }
@@ -96,10 +103,14 @@ fun UserEditContent(
                     website = websiteState.value
                 )
                 onSaveClick(updatedUser)
+                navController.navigate(Screen.UserDetail.createRoute(updatedUser.id)) {
+                    popUpTo(Screen.UserDetail.route) { inclusive = true } // Limpia el back stack
+                }
             },
             modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Guardar")
         }
+
     }
 }
