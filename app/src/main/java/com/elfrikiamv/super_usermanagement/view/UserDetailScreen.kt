@@ -14,7 +14,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -30,8 +31,8 @@ fun UserDetailScreen(
     navController: NavController,
     viewModel: UserViewModel = viewModel()
 ) {
-    val user = viewModel.users.collectAsState().value.find { it.id == userId }
-    val posts = viewModel.posts.collectAsState().value.filter { it.userId == userId }
+    val users by viewModel.users.observeAsState(emptyList())
+    val user = users.find { it.id == userId }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Detalles del Usuario") }) },
@@ -39,7 +40,7 @@ fun UserDetailScreen(
             user?.let {
                 UserDetailContent(
                     user = it,
-                    posts = posts,
+                    posts = viewModel.posts.observeAsState(emptyList()).value.filter { post -> post.userId == userId },
                     navController = navController,
                     modifier = Modifier.padding(paddingValues)
                 )
@@ -67,6 +68,17 @@ fun UserDetailContent(
         Text(text = "Empresa: ${user.company.name}")
         Text(text = "Dirección: ${user.address.street}, ${user.address.city}")
 
+        // Botón para editar usuario
+        Button(
+            onClick = {
+                navController.navigate(Screen.UserEdit.createRoute(user.id))
+                //navController.navigate(Screen.UserEdit.route + "/${user.id}")
+            },
+            modifier = Modifier.padding(top = 16.dp)
+        ) {
+            Text("Editar Usuario")
+        }
+
         // Mostrar posts del usuario en tarjetas
         Text(text = "Publicaciones:")
 
@@ -78,17 +90,6 @@ fun UserDetailContent(
                 }
             }
         }
-    }
-
-    // Botón para editar usuario
-    Button(
-        onClick = {
-            navController.navigate(Screen.UserEdit.createRoute(user.id))
-        //navController.navigate(Screen.UserEdit.route + "/${user.id}")
-        },
-        modifier = Modifier.padding(top = 16.dp)
-    ) {
-        Text("Editar Usuario")
     }
 }
 

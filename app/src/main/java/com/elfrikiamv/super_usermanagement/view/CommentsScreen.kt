@@ -12,7 +12,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,7 +21,9 @@ import com.elfrikiamv.super_usermanagement.viewmodel.UserViewModel
 
 @Composable
 fun CommentsScreen(postId: Int, viewModel: UserViewModel = viewModel()) {
-    val comments = viewModel.comments.collectAsState().value.filter { it.postId == postId }
+    // Cambiar a observeAsState() para LiveData
+    val comments =
+        viewModel.comments.observeAsState(emptyList()).value.filter { it.postId == postId }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Comentarios") }) },

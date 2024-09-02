@@ -2,28 +2,28 @@ package com.elfrikiamv.super_usermanagement.viewmodel
 
 // UserViewModel.kt
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elfrikiamv.super_usermanagement.model.Comment
 import com.elfrikiamv.super_usermanagement.model.Post
 import com.elfrikiamv.super_usermanagement.model.User
 import com.elfrikiamv.super_usermanagement.repository.UserRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
     private val repository = UserRepository()
 
-    // LiveData o StateFlow para usuarios
-    private val _users = MutableStateFlow<List<User>>(emptyList())
-    val users: StateFlow<List<User>> get() = _users
+    // LiveData para usuarios
+    private val _users = MutableLiveData<List<User>>(emptyList())
+    val users: LiveData<List<User>> get() = _users
 
-    private val _posts = MutableStateFlow<List<Post>>(emptyList())
-    val posts: StateFlow<List<Post>> get() = _posts
+    private val _posts = MutableLiveData<List<Post>>(emptyList())
+    val posts: LiveData<List<Post>> get() = _posts
 
-    private val _comments = MutableStateFlow<List<Comment>>(emptyList())
-    val comments: StateFlow<List<Comment>> get() = _comments
+    private val _comments = MutableLiveData<List<Comment>>(emptyList())
+    val comments: LiveData<List<Comment>> get() = _comments
 
     init {
         fetchUsers()
@@ -51,20 +51,20 @@ class UserViewModel : ViewModel() {
 
     // Función para actualizar un usuario
     fun updateUser(updatedUser: User) {
-        viewModelScope.launch {
-            // Simula una actualización en la fuente de datos
-            // Reemplaza esto con tu lógica real para actualizar el usuario
-            val updatedUsers = _users.value.map { user ->
-                if (user.id == updatedUser.id) updatedUser else user
+        _users.value = _users.value?.map { user ->
+            if (user.id == updatedUser.id) updatedUser else user
+        }?.toList() // Fuerza una nueva lista para que LiveData detecte el cambio
+
+        // Luego puedes lanzar una corutina para sincronizar con el servidor (si decides implementar esto)
+        /*viewModelScope.launch {
+            try {
+                // Simula la actualización en el servidor
+                repository.updateUserOnServer(updatedUser)
+            } catch (e: Exception) {
+                // Maneja el error si falla la sincronización con el servidor
             }
-            _users.value = updatedUsers
-        }
+        }*/
     }
 
-    /*// Función para actualizar un usuario
-    fun updateUser(updatedUser: User) {
-        _users.value = _users.value.map { user ->
-            if (user.id == updatedUser.id) updatedUser else user
-        }
-    }*/
+
 }

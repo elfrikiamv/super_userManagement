@@ -57,7 +57,6 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -76,12 +75,17 @@ dependencies {
     implementation (libs.androidx.navigation.runtime.ktx)
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
-    implementation (libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.activity.compose.v131)
     implementation (libs.ui)
     implementation (libs.androidx.material)
     implementation (libs.ui.tooling.preview)
     implementation (libs.androidx.runtime.livedata)
+
+    // ViewModel utilities for Compose
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))

@@ -12,7 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -24,8 +24,12 @@ import com.elfrikiamv.super_usermanagement.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserEditScreen(userId: Int, navController: NavController, viewModel: UserViewModel = viewModel()) {
-    val user = viewModel.users.collectAsState().value.find { it.id == userId }
+fun UserEditScreen(
+    userId: Int,
+    navController: NavController,
+    viewModel: UserViewModel = viewModel()
+) {
+    val user = viewModel.users.observeAsState().value?.find { it.id == userId }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Editar Usuario") }) },
