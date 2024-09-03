@@ -19,5 +19,10 @@ class UserRepository {
     suspend fun getComments(): List<Comment> {
         return RetrofitInstance.api.getComments()
     }
+
+    // Función para eliminar usuario en el servidor
+    suspend fun deleteUser(userId: Int) {
+        RetrofitInstance.api.deleteUser(userId)
+    }
 }
 

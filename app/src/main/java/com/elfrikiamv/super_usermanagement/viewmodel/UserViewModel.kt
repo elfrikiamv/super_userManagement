@@ -49,6 +49,21 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    // Función para eliminar usuario
+    fun deleteUser(user: User) {
+        // Actualizamos la lista de usuarios eliminando el usuario correspondiente
+        _users.value = _users.value?.filter { it.id != user.id }
+
+        // Lanzamos una corutina para eliminar el usuario en el servidor
+        viewModelScope.launch {
+            try {
+                repository.deleteUser(user.id)
+            } catch (e: Exception) {
+                // Manejar el error si la eliminación en el servidor falla
+            }
+        }
+    }
+
     // Función para actualizar un usuario
     fun updateUser(updatedUser: User) {
         val updatedUsers = _users.value?.map { user ->
