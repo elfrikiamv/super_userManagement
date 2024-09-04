@@ -24,5 +24,11 @@ class UserRepository {
     suspend fun deleteUser(userId: Int) {
         RetrofitInstance.api.deleteUser(userId)
     }
+
+    // Función para actualizar usuario en el servidor
+    suspend fun updateUser(user: User) {
+        // Aquí deberías implementar la lógica para actualizar el usuario en el servidor
+        RetrofitInstance.api.updateUser(user.id, user) // Suponiendo que `updateUser` esté definido en ApiService
+    }
 }
 

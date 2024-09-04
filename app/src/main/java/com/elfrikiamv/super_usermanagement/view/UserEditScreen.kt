@@ -42,8 +42,9 @@ fun UserEditScreen(
                     user = it,
                     onSaveClick = { updatedUser ->
                         viewModel.updateUser(updatedUser)
+                        // Regresar a UserDetailScreen
                         navController.navigate(Screen.UserDetail.createRoute(updatedUser.id)) {
-                            popUpTo(Screen.UserDetail.route) { inclusive = true }
+                            popUpTo(Screen.UserDetail.route) { inclusive = true } // Limpia el back stack
                         }
                     },
                     navController = navController,
@@ -55,6 +56,7 @@ fun UserEditScreen(
         }
     )
 }
+
 
 @Composable
 fun UserEditContent(

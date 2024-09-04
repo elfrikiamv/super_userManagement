@@ -5,8 +5,10 @@ package com.elfrikiamv.super_usermanagement.network
 import com.elfrikiamv.super_usermanagement.model.Comment
 import com.elfrikiamv.super_usermanagement.model.Post
 import com.elfrikiamv.super_usermanagement.model.User
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
@@ -21,5 +23,9 @@ interface ApiService {
 
     @DELETE("users/{id}")
     suspend fun deleteUser(@Path("id") userId: Int)
+
+    @PUT("users/{id}")
+    suspend fun updateUser(@Path("id") userId: Int, @Body user: User)
+
 }
 

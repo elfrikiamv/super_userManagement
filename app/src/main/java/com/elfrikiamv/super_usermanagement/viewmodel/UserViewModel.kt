@@ -2,6 +2,7 @@ package com.elfrikiamv.super_usermanagement.viewmodel
 
 // UserViewModel.kt
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -66,11 +67,63 @@ class UserViewModel : ViewModel() {
 
     // Función para actualizar un usuario
     fun updateUser(updatedUser: User) {
+        Log.d("UserViewModel", "Actualizando usuario: ${updatedUser.name}")
+
+        viewModelScope.launch {
+            try {
+                repository.updateUser(updatedUser)
+                _users.value = _users.value?.map { user ->
+                    if (user.id == updatedUser.id) updatedUser else user
+                }
+                Log.d("UserViewModel", "Usuario actualizado con éxito: ${updatedUser.name}")
+            } catch (e: Exception) {
+                Log.e("UserViewModel", "Error al actualizar usuario: ${e.message}", e)
+            }
+        }
+    }
+    /*fun updateUser(updatedUser: User) {
+        // Actualizamos la lista localmente antes de sincronizar con el servidor
+        val updatedUsers = _users.value?.map { user ->
+            if (user.id == updatedUser.id) updatedUser else user
+        } ?: emptyList()
+        _users.value = updatedUsers
+
+        // Lanzamos una corutina para actualizar el usuario en el servidor
+        viewModelScope.launch {
+            try {
+                repository.updateUser(updatedUser.id, updatedUser)
+            } catch (e: Exception) {
+                // Manejar el error si la actualización en el servidor falla
+            }
+        }
+    }*/
+
+    /*fun updateUser(updatedUser: User) {
+        // Crea una nueva lista para asegurarte de que LiveData detecte el cambio
+        val updatedUsers = _users.value?.map { user ->
+            if (user.id == updatedUser.id) updatedUser else user
+        } ?: emptyList()
+
+        // Asigna la nueva lista a LiveData
+        _users.value = updatedUsers
+
+        // Opcional: Si deseas sincronizar con el servidor, puedes descomentar el siguiente bloque
+        *//*viewModelScope.launch {
+            try {
+                // Simula la actualización en el servidor
+                repository.updateUserOnServer(updatedUser)
+            } catch (e: Exception) {
+                // Maneja el error si falla la sincronización con el servidor
+            }
+        }*//*
+    }*/
+
+    /*fun updateUser(updatedUser: User) {
         val updatedUsers = _users.value?.map { user ->
             if (user.id == updatedUser.id) updatedUser else user
         } ?: emptyList()
         _users.postValue(updatedUsers) // Asegura la actualización
-    }
+    }*/
 
 
 

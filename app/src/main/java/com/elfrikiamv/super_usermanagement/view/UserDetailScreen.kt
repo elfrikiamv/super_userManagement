@@ -2,6 +2,7 @@ package com.elfrikiamv.super_usermanagement.view
 
 // UserDetailScreen.kt
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,6 +34,8 @@ fun UserDetailScreen(
 ) {
     val users by viewModel.users.observeAsState(emptyList())
     val user = users.find { it.id == userId }
+
+    Log.d("UserDetailScreen", "Usuario encontrado: ${user?.name}")
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Detalles del Usuario") }) },
