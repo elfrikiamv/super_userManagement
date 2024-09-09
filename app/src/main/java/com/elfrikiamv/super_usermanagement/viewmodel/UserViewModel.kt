@@ -125,8 +125,6 @@ class UserViewModel : ViewModel() {
         _users.postValue(updatedUsers) // Asegura la actualización
     }*/
 
-
-
     /*fun updateUser(updatedUser: User) {
         // Crea una nueva lista para asegurarte de que LiveData detecte el cambio
         val updatedUsers = _users.value?.map { user ->
@@ -146,6 +144,4 @@ class UserViewModel : ViewModel() {
             }
         }*//*
     }*/
-
-
 }

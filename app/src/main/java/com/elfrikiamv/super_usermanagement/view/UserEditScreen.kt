@@ -2,11 +2,15 @@ package com.elfrikiamv.super_usermanagement.view
 
 //UserEditScreen.kt
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,7 +39,20 @@ fun UserEditScreen(
     val user = users.find { it.id == userId }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Editar Usuario") }) },
+        topBar = {
+            TopAppBar(
+                title = { Text("Editar Usuario") },
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Regresar",
+                        modifier = Modifier.clickable {
+                            navController.popBackStack() // Regresa a la pantalla anterior
+                        }
+                    )
+                }
+            )
+        },
         content = { paddingValues ->
             user?.let {
                 UserEditContent(
@@ -44,7 +61,9 @@ fun UserEditScreen(
                         viewModel.updateUser(updatedUser)
                         // Regresar a UserDetailScreen
                         navController.navigate(Screen.UserDetail.createRoute(updatedUser.id)) {
-                            popUpTo(Screen.UserDetail.route) { inclusive = true } // Limpia el back stack
+                            popUpTo(Screen.UserDetail.route) {
+                                inclusive = true
+                            } // Limpia el back stack
                         }
                     },
                     navController = navController,

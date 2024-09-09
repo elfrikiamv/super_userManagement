@@ -11,15 +11,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,6 +34,7 @@ import com.elfrikiamv.super_usermanagement.navigation.Screen
 import com.elfrikiamv.super_usermanagement.viewmodel.UserViewModel
 
 // Composable function to display the list of users
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserListScreen(navController: NavController, viewModel: UserViewModel = viewModel()) {
     // Obtenemos la lista de usuarios desde el ViewModel utilizando LiveData y observeAsState
@@ -53,7 +56,12 @@ fun UserListScreen(navController: NavController, viewModel: UserViewModel = view
 }
 
 @Composable
-fun UserList(users: List<User>, navController: NavController, onDeleteUser: (User) -> Unit, modifier: Modifier = Modifier) {
+fun UserList(
+    users: List<User>,
+    navController: NavController,
+    onDeleteUser: (User) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
@@ -76,7 +84,10 @@ fun UserItem(user: User, onClick: () -> Unit, onDelete: () -> Unit) {
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable { onClick() }, // Acción al hacer clic en la card
-        elevation = 4.dp
+        // Si deseas aplicar una elevación en Material 3, puedes usar este modificador
+        elevation = CardDefaults.elevatedCardElevation(4.dp), // Aplica la elevación de la sombra
+        // También puedes controlar el color de la sombra
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         // Se utiliza una fila para colocar el nombre y el ícono de eliminar en la misma línea
         Row(
@@ -87,13 +98,16 @@ fun UserItem(user: User, onClick: () -> Unit, onDelete: () -> Unit) {
             Column(
                 modifier = Modifier.weight(1f) // Ocupa todo el espacio restante
             ) {
-                Text(text = user.name, style = MaterialTheme.typography.h6)
-                Text(text = user.email, style = MaterialTheme.typography.body2)
+                Text(text = user.name, style = MaterialTheme.typography.headlineSmall)
+                Text(text = user.email, style = MaterialTheme.typography.bodyMedium)
             }
 
             // Botón de ícono para eliminar al usuario
             IconButton(onClick = onDelete) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar usuario") // Ícono de basura
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Eliminar usuario"
+                ) // Ícono de basura
             }
         }
     }

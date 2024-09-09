@@ -23,7 +23,7 @@ fun NavGraph(navController: NavHostController) {
         }
         composable(Screen.Comments.route) { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId")?.toIntOrNull() ?: 0
-            CommentsScreen(postId)
+            CommentsScreen(postId, navController)
         }
 
         composable(Screen.UserEdit.route) { backStackEntry ->
