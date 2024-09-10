@@ -4,7 +4,9 @@ package com.elfrikiamv.super_usermanagement.view
 
 import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,11 +14,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -52,9 +53,11 @@ fun UserDetailScreen(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Regresar",
-                        modifier = Modifier.clickable {
-                            navController.popBackStack() // Regresa a la pantalla anterior
-                        }
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .clickable {
+                                navController.popBackStack() // Regresa a la pantalla anterior
+                            }
                     )
                 }
             )
@@ -81,27 +84,56 @@ fun UserDetailContent(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.padding(16.dp)) {
-        Text(text = "Nombre: ${user.name}")
-        Text(text = "Nombre de usuario: ${user.username}")
-        Text(text = "Correo electrónico: ${user.email}")
-        Text(text = "Teléfono: ${user.phone}")
-        Text(text = "Sitio web: ${user.website}")
-        Text(text = "Empresa: ${user.company.name}")
-        Text(text = "Dirección: ${user.address.street}, ${user.address.city}")
+    Column(modifier = modifier.padding(horizontal = 16.dp)) {
 
+        // Encapsulamos la información del usuario en una Card
+        ElevatedCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp) // Padding alrededor de la Card
+        ) {
+            // Contenido dentro de la Card
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = "Nombre: ${user.name}")
+                Text(text = "Nombre de usuario: ${user.username}")
+                Text(text = "Correo electrónico: ${user.email}")
+                Text(text = "Teléfono: ${user.phone}")
+                Text(text = "Sitio web: ${user.website}")
+                Text(text = "Empresa: ${user.company.name}")
+                Text(text = "Dirección: ${user.address.street}, ${user.address.city}")
+            }
+        }
+
+        // Botón para editar el usuario
         Button(
             onClick = {
                 navController.navigate(Screen.UserEdit.createRoute(user.id))
             },
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier
+                //.padding(top = 16.dp)
+                .fillMaxWidth()
         ) {
             Text("Editar Usuario")
         }
 
-        Text(text = "Publicaciones:")
+        // Agregamos un Divider entre el botón y el texto "Publicaciones"
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 16.dp),
+            thickness = 1.dp,
+            //color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+        )
 
-        LazyColumn {
+        // Título para las publicaciones
+        Text(
+            text = "Publicaciones de ${user.username}:",
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Lista de publicaciones del usuario
+        LazyColumn(
+            contentPadding = PaddingValues(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             items(posts) { post ->
                 PostCard(post = post) {
                     navController.navigate(Screen.Comments.createRoute(post.id))
@@ -113,15 +145,11 @@ fun UserDetailContent(
 
 @Composable
 fun PostCard(post: Post, onClick: () -> Unit) {
-    Card(
+    ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clickable { onClick() },
-        // Si deseas aplicar una elevación en Material 3, puedes usar este modificador
-        elevation = CardDefaults.elevatedCardElevation(4.dp), // Aplica la elevación de la sombra
-        // También puedes controlar el color de la sombra
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            //.padding(top = 16.dp)
+            .clickable { onClick() }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = "Título: ${post.title}")

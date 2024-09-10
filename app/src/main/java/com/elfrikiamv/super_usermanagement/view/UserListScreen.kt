@@ -66,7 +66,7 @@ fun UserList(
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(users) { user ->
             UserItem(
@@ -83,7 +83,7 @@ fun UserItem(user: User, onClick: () -> Unit, onDelete: () -> Unit) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            //.padding(vertical = 4.dp)
             .clickable { onClick() }, // Acción al hacer clic en la card
     ) {
         // Se utiliza una fila para colocar el nombre y el ícono de eliminar en la misma línea
