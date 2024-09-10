@@ -13,8 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,7 +41,9 @@ fun UserListScreen(navController: NavController, viewModel: UserViewModel = view
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("User Management") }) // Barra superior con el título de la pantalla
+            TopAppBar(title = {
+                Text("User Management")
+            }) // Barra superior con el título de la pantalla
         },
         content = { paddingValues ->
             UserList(
@@ -79,15 +80,11 @@ fun UserList(
 
 @Composable
 fun UserItem(user: User, onClick: () -> Unit, onDelete: () -> Unit) {
-    Card(
+    ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable { onClick() }, // Acción al hacer clic en la card
-        // Si deseas aplicar una elevación en Material 3, puedes usar este modificador
-        elevation = CardDefaults.elevatedCardElevation(4.dp), // Aplica la elevación de la sombra
-        // También puedes controlar el color de la sombra
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         // Se utiliza una fila para colocar el nombre y el ícono de eliminar en la misma línea
         Row(
