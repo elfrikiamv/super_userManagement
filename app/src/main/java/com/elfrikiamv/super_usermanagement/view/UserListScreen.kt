@@ -25,6 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -83,7 +85,6 @@ fun UserItem(user: User, onClick: () -> Unit, onDelete: () -> Unit) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            //.padding(vertical = 4.dp)
             .clickable { onClick() }, // Acción al hacer clic en la card
     ) {
         // Se utiliza una fila para colocar el nombre y el ícono de eliminar en la misma línea
@@ -93,10 +94,17 @@ fun UserItem(user: User, onClick: () -> Unit, onDelete: () -> Unit) {
         ) {
             // Column para los detalles del usuario
             Column(
-                modifier = Modifier.weight(1f) // Ocupa todo el espacio restante
+                modifier = Modifier.weight(1f) // Ocupa all el espacio restante
             ) {
-                Text(text = user.name, style = MaterialTheme.typography.headlineSmall)
-                Text(text = user.email, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "${user.name}.",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = user.email,
+                    fontStyle = FontStyle.Italic,
+                    modifier = Modifier.alpha(0.8f) // Aplica opacidad del 80%
+                )
             }
 
             // Botón de ícono para eliminar al usuario
