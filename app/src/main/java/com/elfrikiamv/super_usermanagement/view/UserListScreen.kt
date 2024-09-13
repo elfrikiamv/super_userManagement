@@ -2,6 +2,8 @@ package com.elfrikiamv.super_usermanagement.view
 
 // UserListScreen.kt
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,20 +15,25 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -38,20 +45,70 @@ import com.elfrikiamv.super_usermanagement.viewmodel.UserViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserListScreen(navController: NavController, viewModel: UserViewModel = viewModel()) {
-    // Obtenemos la lista de usuarios desde el ViewModel utilizando LiveData y observeAsState
     val users by viewModel.users.observeAsState(emptyList())
+    val searchQuery =
+        remember { mutableStateOf(TextFieldValue("")) } // Estado para el campo de búsqueda
+    val isSearchActive =
+        remember { mutableStateOf(false) } // Estado para mostrar u ocultar el campo de búsqueda
+
+    // Filtrar usuarios según la búsqueda por nombre o correo electrónico
+    val filteredUsers = users.filter {
+        it.name.contains(searchQuery.value.text, ignoreCase = true) ||
+                it.email.contains(searchQuery.value.text, ignoreCase = true)
+    }
 
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text("User Management")
-            }) // Barra superior con el título de la pantalla
+            TopAppBar(
+                title = {
+                    if (!isSearchActive.value) {
+                        Text("User Management")
+                    }
+                },
+                actions = {
+                    // Icono de lupa que activa el campo de búsqueda
+                    AnimatedVisibility(
+                        visible = isSearchActive.value,
+                        enter = androidx.compose.animation.expandHorizontally(
+                            animationSpec = tween(
+                                300
+                            )
+                        ),
+                        exit = androidx.compose.animation.shrinkHorizontally(
+                            animationSpec = tween(
+                                300
+                            )
+                        )
+                    ) {
+                        OutlinedTextField(
+                            value = searchQuery.value,
+                            onValueChange = { searchQuery.value = it },
+                            placeholder = { Text("Buscar por nombre o email") },
+                            modifier = Modifier.fillMaxWidth(0.85f),
+                            singleLine = true
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
+                            isSearchActive.value = !isSearchActive.value
+                            if (!isSearchActive.value) searchQuery.value =
+                                TextFieldValue("") // Limpia el texto cuando se cierra
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Buscar usuario"
+                        )
+                    }
+                }
+            )
         },
         content = { paddingValues ->
             UserList(
-                users = users,
+                users = filteredUsers, // Usamos la lista filtrada
                 navController = navController,
-                onDeleteUser = { user -> viewModel.deleteUser(user) }, // Llamamos a la función para eliminar usuario
+                onDeleteUser = { user -> viewModel.deleteUser(user) },
                 modifier = Modifier.padding(paddingValues)
             )
         }
