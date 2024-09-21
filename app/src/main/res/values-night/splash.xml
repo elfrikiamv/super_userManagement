@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Super_userManagement.SplashScreen" parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_super_user_management</item>
+        <item name="postSplashScreenTheme">@style/Theme.Super_userManagement</item>
+    </style>
+</resources>

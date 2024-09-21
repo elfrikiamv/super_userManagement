@@ -81,6 +81,9 @@ dependencies {
     implementation (libs.ui.tooling.preview)
     implementation (libs.androidx.runtime.livedata)
 
+    //splashscreen API
+    implementation (libs.androidx.core.splashscreen)
+
     // ViewModel utilities for Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
